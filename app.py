@@ -75,12 +75,20 @@ def movie():
 
     # 根据 item guid 获取文件流信息，拼接smb文件参数
     success, res = fn_api('/v/api/v1/stream/list/' + item_guid, None)
-    if not success or not res['files']:
+    if not success or not res['files'] or not res['video_streams']:
         logger.error(f'获取影视流信息失败 - item_guid = {item_guid} 错误信息={res}')
         return jsonify({'status': 'fail'})
 
     if media_guid == '':
         media_guid = res['files'][0]['guid']
+
+    video_guid = res['video_streams'][0]['guid']
+    # 根据 media guid 获取 video_streams 对象
+    for stream in res['video_streams']:
+        stream_media_guid = stream['media_guid']
+        if stream_media_guid == media_guid:
+            video_guid = stream['guid']
+            break
 
     file_path = res['files'][0]['path']
     # 根据 media guid 获取 files 对象
@@ -115,7 +123,7 @@ def movie():
     logger.info(f'检测到PotPlayer已关闭，关闭时进度为：{seconds_to_hms(stop_sec)}')
 
     # 修改时间
-    success, res = fn_api('/v/api/v1/play/record', {'item_guid': item_guid, 'media_guid': media_guid, 'ts': stop_sec})
+    success, res = fn_api('/v/api/v1/play/record', {'item_guid': item_guid, 'media_guid': media_guid, 'video_guid': video_guid, 'ts': stop_sec})
     if not success:
         logger.error(f'修改进度失败 - item_guid = {item_guid} stop_sec = {stop_sec} 错误信息={res}')
         return jsonify({'status': 'fail'})
