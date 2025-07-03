@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 import threading
 import time
@@ -64,27 +65,28 @@ def movie():
 
     # 根据 item guid 获取影视信息，包括播放开始时间，标题
     status_code, res = fn_api('/v/api/v1/play/info', {'item_guid': item_guid})
-    print('info', status_code, res)
+    #print('info', status_code, res)
     media_guid = res['media_guid'] or ''
     ts = res['ts']
     title = res['item']['title']
 
     # 根据 item guid 获取文件流信息，拼接smb文件参数
     status_code, res = fn_api('/v/api/v1/stream/list/' + item_guid, None)
-    print('stream', status_code, res)
+    #print('stream', status_code, res)
 
     if media_guid == '':
         media_guid = res['files'][0]['guid']
     file_path = res['files'][0]['path']
 
     # 移除 '/vol1/1000'
-    path_without_prefix = file_path.replace('/vol1/1000/', '', 1)
+    pattern = r'/vol\d/\d{4}/'
+    path_without_prefix = re.sub(pattern, '', file_path)
+    # path_without_prefix = file_path.replace('/vol1/1000/', '', 1)
     # 将所有 '/' 替换为 '\\'
     windows_path = path_without_prefix.replace('/', '\\')
-
-    print(windows_path)
-
     smb_url = f'\\\\{hostname}\\{windows_path}'
+
+    logger.info(smb_url)
 
     time_cmd = '/seek=' + seconds_to_hms(ts)
 

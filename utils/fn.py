@@ -72,5 +72,5 @@ def fn_api(url, data):
     res = response.json()
     # print('res - ', url, type(res), res)
     if res['code'] != 0:
-        logger.error('api error - ' + res.msg)
+        print('api error - ' + res.msg)
     return res['code'], res['data']
