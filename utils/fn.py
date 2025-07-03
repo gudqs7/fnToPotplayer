@@ -1,0 +1,76 @@
+import hashlib
+import json
+import random
+import time
+
+from utils.logger import logger
+
+import requests
+
+baseUrl = "xxx"
+fn_token = 'xxx'
+api_key = 'NDzZTVxnRKP8Z0jXg1VAMonaG8akvh'
+api_secret = '16CCEB3D-AB42-077D-36A1-F355324E4237'
+
+
+def set_global_info(url, token):
+    global baseUrl, fn_token
+    baseUrl = url
+    fn_token = token
+
+
+def get_md5(text: str) -> str:
+    """
+    计算字符串的MD5哈希值
+
+    参数:
+        text (str): 要计算哈希的文本字符串
+
+    返回:
+        str: 32位十六进制格式的MD5哈希值
+
+    示例:
+        >>> get_md5("Hello, World!")
+        '65a8e27d8879283831b664bd8b7f0ad4'
+    """
+    return hashlib.md5(text.encode('utf-8')).hexdigest()
+
+
+def generate_random_digits(length=6):
+    """生成指定位数的随机数字字符串（0-9）"""
+    return ''.join(str(random.randint(0, 9)) for _ in range(length))
+
+
+def gen_fn_authx(url, data):
+    # nonce=102364&timestamp=1751540090490&sign=ae2381cf8eb78bf1d585c622e8906767
+    nonce = generate_random_digits()
+    timestamp = int(time.time() * 1000)
+
+    if not data:
+        data_json = ''
+    else:
+        data_json = json.dumps(data)
+
+    data_json_md5 = get_md5(data_json)
+    sign_array = [api_key, url, nonce, str(timestamp), data_json_md5, api_secret]
+
+    sign_str = '_'.join(sign_array)
+
+    sign = get_md5(sign_str)
+    return f'nonce={nonce}&timestamp={timestamp}&sign={sign}'
+
+
+def fn_api(url, data):
+    full_url = baseUrl + url
+    authx = gen_fn_authx(url, data)
+    headers = {"Content-Type": "application/json", "Authorization": fn_token, "authx": authx}
+
+    if data is None:
+        response = requests.get(full_url, headers=headers)
+    else:
+        response = requests.post(full_url, headers=headers, json=data)
+    res = response.json()
+    # print('res - ', url, type(res), res)
+    if res['code'] != 0:
+        logger.error('api error - ' + res.msg)
+    return res['code'], res['data']

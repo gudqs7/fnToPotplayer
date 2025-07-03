@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Subtitle Burner</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-400: #9ca3af;
+            --gray-600: #4b5563;
+            --gray-800: #1f2937;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--gray-100);
+            color: var(--gray-800);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 2rem;
+            width: 100%;
+            max-width: 900px;
+        }
+        
+        h1 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            font-size: 1.5rem;
+            text-align: center;
+            color: var(--gray-800);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--gray-200);
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.2s;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-light);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+        
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: var(--primary-light);
+        }
+        
+        #status {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 6px;
+            display: none;
+        }
+        
+        .success {
+            background-color: #ecfdf5;
+            color: #065f46;
+            padding: 0 10px;
+        }
+        
+        .error {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+        
+        .file-list {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+        /* 之前的样式保持不变，只添加新的样式 */
+        .subtitle-option {
+            display: flex;
+            justify-content: space-between;
+        }
+        .subtitle-type {
+            font-size: 0.8em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>测试</h1>
+        
+        <div class="form-group">
+            <label for="input_path">item guid</label>
+            <input type="text" id="input_path" placeholder="输入item guid">
+        </div>
+
+        <div class="form-group">
+            <label for="offset">media guid</label>
+            <input type="text" id="offset" value="">
+        </div>
+
+        <button id="process_btn">开始处理</button>
+        <button id="cancel_btn" style="
+            background-color: #ff4444;
+            margin-top: 10px;
+            display: none;
+        ">中止处理</button>
+        
+        <!-- <div id="status"></div> -->
+        <div id="status-container" style="
+            margin-top: 10px;
+            height: 200px;
+            overflow-y: auto;
+            background: #f5f5f5;
+            border-radius: 4px;
+            font-family: monospace;
+        ">
+            <div id="status-content" style="height: 0;"></div>    
+        </div>
+        
+    </div>
+
+    <script>
+
+        document.getElementById('process_btn').addEventListener('click', async function() {
+            isProcessing = true;
+            document.getElementById('cancel_btn').style.display = 'block';
+            
+            const inputPath = document.getElementById('input_path').value.trim();
+            const offset = document.getElementById('offset').value.trim();
+            
+            if (!inputPath) {
+                showStatus('Please enter an input path', 'error');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('item_guid', inputPath);
+            formData.append('media_guid', offset);
+            
+            try {
+                document.getElementById('status-content').innerHTML = '';
+                showStatus('Processing...<br/>', 'success');
+                
+                const response = await fetch('/movie', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    showStatus(data.error, 'error');
+                } else {
+                    showStatus('成功了', 'success');
+                }
+            } catch (error) {
+                showStatus('Processing failed: ' + error.message, 'error');
+            }
+        });
+
+        function showStatus(message, type) {
+            const line = document.createElement('div');
+            line.innerHTML = message;
+            line.className = type;
+            document.getElementById('status-content').appendChild(line);
+        }
+    </script>
+</body>
+</html>
