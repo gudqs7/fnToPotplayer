@@ -4,15 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="fix video_guid">
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="add tv support">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/chrome-extensions/tv.js" beforeDir="false" afterPath="$PROJECT_DIR$/chrome-extensions/tv.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/fn.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/fn.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/log.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/potplayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/potplayer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/windows_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/windows_tool.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -146,7 +141,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751563622652</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="add tv support">
+      <option name="closed" value="true" />
+      <created>1751574946849</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1751574946849</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -154,6 +157,7 @@
     <MESSAGE value="add README.md" />
     <MESSAGE value="do logger" />
     <MESSAGE value="fix video_guid" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix video_guid" />
+    <MESSAGE value="add tv support" />
+    <option name="LAST_COMMIT_MESSAGE" value="add tv support" />
   </component>
 </project>

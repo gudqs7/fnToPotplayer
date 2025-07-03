@@ -55,7 +55,7 @@ function fireContentLoadedEvent() {
         btn.parentNode.appendChild(clonedElement);
 
         var btnText = clonedElement.querySelector('span > span > span')
-        btnText.innerHTML = 'PotPlayer播放（未实现）'
+        btnText.innerHTML = 'PotPlayer播放'
 
         clonedElement.addEventListener('click', async function(){
             const url = window.location.href;
