@@ -5,7 +5,7 @@ pip install requests
 python app.py
 
 # 打包exe
-pyinstaller --onefile --name=fnToPotPlayer app.py
+pyinstaller --onefile --icon=icon.png --name=飞牛跳转PotPlayer app.py
 ```
 
 1.nas需要开通smb协议，相关影视的文件夹可见；并确保在文件管理器上访问过一次（用于记录账号密码信息）  

@@ -1,6 +1,6 @@
 import time
 
-from utils.logger import logger
+from utils.log import logger
 
 prefetch_data = dict(on=True, running=False, stop_sec_dict={}, done_list=[])
 

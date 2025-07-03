@@ -65,7 +65,7 @@ function fireContentLoadedEvent() {
             const token = getCookie('Trim-MC-token')
 
             const formData = new FormData();
-            formData.append('item_guid', lastPart);
+            formData.append('season_guid', lastPart);
             formData.append('base_url', origin);
             formData.append('token', token);
             formData.append('hostname', hostname);

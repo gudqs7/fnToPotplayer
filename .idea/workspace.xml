@@ -4,10 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="do logger">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="fix video_guid">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chrome-extensions/tv.js" beforeDir="false" afterPath="$PROJECT_DIR$/chrome-extensions/tv.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/fn.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/fn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/log.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/potplayer.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/potplayer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/windows_tool.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/windows_tool.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -133,13 +138,22 @@
       <option name="project" value="LOCAL" />
       <updated>1751562630781</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="fix video_guid">
+      <option name="closed" value="true" />
+      <created>1751563622652</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1751563622652</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <MESSAGE value="add README.md" />
     <MESSAGE value="do logger" />
-    <option name="LAST_COMMIT_MESSAGE" value="do logger" />
+    <MESSAGE value="fix video_guid" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix video_guid" />
   </component>
 </project>

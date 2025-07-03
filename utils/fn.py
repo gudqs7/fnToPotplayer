@@ -2,10 +2,11 @@ import hashlib
 import json
 import random
 import time
-
-from utils.logger import logger
+from time import sleep
 
 import requests
+
+from utils.log import logger
 
 baseUrl = "xxx"
 fn_token = 'xxx'
@@ -46,7 +47,7 @@ def gen_fn_authx(url, data):
     nonce = generate_random_digits()
     timestamp = int(time.time() * 1000)
 
-    if not data:
+    if data is None:
         data_json = ''
     else:
         data_json = json.dumps(data)
@@ -60,7 +61,7 @@ def gen_fn_authx(url, data):
     return f'nonce={nonce}&timestamp={timestamp}&sign={sign}'
 
 
-def fn_api(url, data):
+def fn_api(url, data, try_times=0):
     full_url = baseUrl + url
     authx = gen_fn_authx(url, data)
     headers = {"Content-Type": "application/json", "Authorization": fn_token, "authx": authx}
@@ -70,7 +71,17 @@ def fn_api(url, data):
     else:
         response = requests.post(full_url, headers=headers, json=data)
     res = response.json()
-    if res['code'] != 0:
-        return False, res['msg']
+    if 'code' in res:
+        if res['code'] == 5000 and res['msg'] == 'invalid sign':
+            if try_times > 2:
+                return False, f'尝试次数过多 try_times = {try_times}'
+            sleep(0.3)
+            logger.info(f'fn_api 请求时签名错误，重试中 try_times = {try_times}')
+            return fn_api(url, data, try_times + 1)
+        if res['code'] != 0:
+            return False, res['msg']
+        else:
+            return True, res['data']
     else:
-        return True, res['data']
+        logger.error(f'fn_api 请求失败 - res = {res}')
+        return False, res

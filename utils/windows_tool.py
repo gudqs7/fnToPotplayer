@@ -5,7 +5,7 @@ import json
 import re
 import subprocess
 
-from utils.logger import logger
+from utils.log import logger
 
 user32 = ctypes.windll.user32
 kernel32 = ctypes.windll.kernel32
