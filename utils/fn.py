@@ -70,7 +70,7 @@ def fn_api(url, data):
     else:
         response = requests.post(full_url, headers=headers, json=data)
     res = response.json()
-    # print('res - ', url, type(res), res)
     if res['code'] != 0:
-        print('api error - ' + res.msg)
-    return res['code'], res['data']
+        return False, res['msg']
+    else:
+        return True, res['data']

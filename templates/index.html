@@ -175,7 +175,9 @@
 
             const formData = new FormData();
             formData.append('item_guid', inputPath);
-            formData.append('media_guid', offset);
+            formData.append('base_url', 'http://192.168.3.66:5666');
+            formData.append('token', '1089526fa848443d92669efb354181e3');
+            formData.append('hostname', '192.168.3.66');
             
             try {
                 document.getElementById('status-content').innerHTML = '';

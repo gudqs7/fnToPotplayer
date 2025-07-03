@@ -61,5 +61,5 @@ def stop_sec_pot(pid, stop_sec_only=True, check_only=False, **_):
         time.sleep(0.3)
     if check_only:
         return False
-    logger.info(f'pot stop, {stop_sec=}')
+    logger.debug(f'pot stop, {stop_sec=}')
     return stop_sec if stop_sec_only else (name_stop_sec_dict, name_total_sec_dict)
