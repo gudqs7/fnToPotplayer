@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="电影增加已观看判断">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="tips">
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -172,7 +171,15 @@
       <option name="project" value="LOCAL" />
       <updated>1751607323561</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="tips">
+      <option name="closed" value="true" />
+      <created>1751614446917</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1751614446917</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -183,6 +190,7 @@
     <MESSAGE value="add tv support" />
     <MESSAGE value="update tv" />
     <MESSAGE value="电影增加已观看判断" />
-    <option name="LAST_COMMIT_MESSAGE" value="电影增加已观看判断" />
+    <MESSAGE value="tips" />
+    <option name="LAST_COMMIT_MESSAGE" value="tips" />
   </component>
 </project>
