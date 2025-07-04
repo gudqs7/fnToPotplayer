@@ -8,10 +8,11 @@ python app.py
 pyinstaller --onefile --icon=icon.png --name=fn2PotPlayer app.py
 ```
 
+0.PotPlayer路径为安装版默认路径，即 `C:\Program Files\DAUM\PotPlayer\PotPlayerMini64.exe`
 1.nas需要开通smb协议，相关影视的文件夹可见；并确保在文件管理器上访问过一次（用于记录账号密码信息）  
 2.视频文件必须是 我的文件（即应用权限添加文件夹那个框左边第一个）下的文件  
 不能是 `@appcenter` 这种之类的，必须是用户创建的文件夹，否则smb无法访问到  
-3.需要安装谷歌插件，在 `chrome-extensions` 文件夹
+3.需要安装谷歌插件，在 `chrome-extensions` 文件夹或 release 附件
 
 ## 电视剧使用事项
 
