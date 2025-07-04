@@ -77,14 +77,17 @@ def movie():
 
     # 根据 item guid 获取影视信息，包括播放开始时间，标题
     success, res = fn_api('/v/api/v1/play/info', {'item_guid': item_guid})
-    if not success:
+    if not success or not check_key(res, 'item'):
         logger.error(f'获取影视信息失败 - item_guid = {item_guid} 错误信息={res}')
         return jsonify({'status': 'fail'})
+
+    #print('play info ', json.dumps(res))
 
     media_guid = res['media_guid'] or ''
     video_guid = res['video_guid'] or ''
     ts = res['ts']
-    title = res['item']['title']
+    title = res['item'].get('title') or ''
+    duration = res['item']['duration']
 
     # 根据 item guid 获取文件流信息，拼接smb文件参数
     success, res = fn_api('/v/api/v1/stream/list/' + item_guid, None)
@@ -101,6 +104,13 @@ def movie():
         file_guid = file['guid']
         if file_guid == media_guid:
             file_path = file['path']
+            break
+    # 从 video_streams 获取准确的 duration
+    for video in res['video_streams']:
+        video_stream_guid = video['guid']
+        video_media_guid = video['media_guid']
+        if video_stream_guid == video_guid or media_guid == video_media_guid:
+            duration = video['duration']
             break
 
     # 移除 '/vol1/1000'
@@ -125,14 +135,25 @@ def movie():
     if stop_sec is None:
         return jsonify({'status': 'fail'})
 
-    logger.info(f'检测到PotPlayer已关闭，关闭时进度为：{seconds_to_hms(stop_sec)}')
+    logger.info(f'检测到PotPlayer已关闭，关闭时进度为：{seconds_to_hms(stop_sec)} / {seconds_to_hms(duration)}')
 
-    # 修改时间
-    success, res = fn_api('/v/api/v1/play/record',
-                          {'item_guid': item_guid, 'media_guid': media_guid, 'video_guid': video_guid, 'ts': stop_sec})
-    if not success:
-        logger.error(f'修改进度失败 - item_guid = {item_guid} stop_sec = {stop_sec} 错误信息={res}')
-        return jsonify({'status': 'fail'})
+    # 小于15s，视作已观看
+    if (duration - stop_sec) < 15:
+        # 电影标记已观看
+        logger.info(f'更新已观看：item_guid = {item_guid}')
+        success, res = fn_api(f'/v/api/v1/item/watched', {'item_guid': item_guid})
+        if not success:
+            logger.error(f'更新已观看失败 - item_guid = {item_guid} 错误信息={res}')
+            return jsonify({'status': 'fail'})
+    else:
+        # 修改时间
+        logger.info(f'修改观看进度：item_guid = {item_guid} stop_sec = {seconds_to_hms(stop_sec)}')
+        success, res = fn_api('/v/api/v1/play/record',
+                              {'item_guid': item_guid, 'media_guid': media_guid, 'video_guid': video_guid,
+                               'ts': stop_sec})
+        if not success:
+            logger.error(f'修改进度失败 - item_guid = {item_guid} stop_sec = {stop_sec} 错误信息={res}')
+            return jsonify({'status': 'fail'})
 
     return jsonify({'status': 'ok'})
 
@@ -214,6 +235,11 @@ def tv():
             if file_guid == media_guid:
                 file_path = file['path']
                 break
+        # 从 video_streams 获取准确的 duration
+        for video in res['video_streams']:
+            video_stream_guid = video['guid']
+            if video_stream_guid == video_guid:
+                duration = video['duration']
 
         # 移除 '/vol1/1000'
         pattern = r'/vol\d/\d{4}/'

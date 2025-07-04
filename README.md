@@ -5,7 +5,7 @@ pip install requests
 python app.py
 
 # 打包exe
-pyinstaller --onefile --icon=icon.png --name=飞牛跳转PotPlayer app.py
+pyinstaller --onefile --icon=icon.png --name=fn2PotPlayer app.py
 ```
 
 1.nas需要开通smb协议，相关影视的文件夹可见；并确保在文件管理器上访问过一次（用于记录账号密码信息）  
@@ -23,3 +23,13 @@ PotPlayer 需创建一个 fntv 的配置文件，创建步骤如下
 
 另外推荐设置收尾处理，否则播放完后需手动Alt+F4
 右键播放器界面 > 配置/语言/其他 > 收尾处理 > 选择播放完当前后退出。
+
+## 程序原理
+
+> 首先感谢大佬 `https://github.com/kjtsune/embyToLocalPlayer`  
+
+
+程序有谷歌插件修改飞牛影视网页，添加按钮，然后发起请求到Python服务端  
+Python服务端根据插件的信息访问飞牛影视API（如 `/v/api/v1/item/watched` 用于标记已观看）  
+API主要获取视频文件地址，来拼接smb地址，最后用cmd调用PotPlayer播放视频  
+同时监控PotPlayer进程关闭情况来获取播放进度，最后将播放进度用API同步到飞牛。  
