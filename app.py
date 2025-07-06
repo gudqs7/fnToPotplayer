@@ -60,6 +60,41 @@ def check_key(res, key):
         return False
 
 
+def convert_file_path(file_path, hostname):
+    # 处理 /vol02 远程挂载
+    if file_path.startswith('/vol02/'):
+        # 获取远程网盘的路径
+        success, res = fn_api('/v/api/v1/server/getAppAuthorizedDir', None)
+        if not success or not check_key(res, 'authDirList'):
+            logger.error(f'获取远程挂载网盘信息失败 - 错误信息={res}')
+            return jsonify({'status': 'fail'})
+
+        for authDir in res['authDirList']:
+            auth_path = authDir['path']
+            if file_path.startswith(auth_path):
+                cloud_type = authDir['cloudStorageType']
+                replace_path = ''
+                if cloud_type == 4:
+                    # 夸克
+                    cloud_username = authDir['username']
+                    replace_path = f'远程挂载-webdav_{cloud_username}_127.0.0.1_dav'
+                elif cloud_type == 1:
+                    # 百度
+                    cloud_comment = authDir['comment']
+                    replace_path = f'远程挂载-百度网盘_{cloud_comment}'
+                pattern = r'/vol02/.*?/'
+                file_path = re.sub(pattern, f'{replace_path}/', file_path)
+                break
+    else:
+        # 移除 '/vol1/1000'
+        pattern = r'/vol\d/\d{4}/'
+        file_path = re.sub(pattern, '', file_path)
+
+    # 将所有 '/' 替换为 '\\'
+    windows_path = file_path.replace('/', '\\')
+    return f'\\\\{hostname}\\{windows_path}'
+
+
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -116,40 +151,8 @@ def movie():
             duration = video['duration']
             break
 
-    # 处理 /vol02 远程挂载
     old_path = file_path
-    if file_path.startswith('/vol02/'):
-        # 获取远程网盘的路径
-        success, res = fn_api('/v/api/v1/server/getAppAuthorizedDir', None)
-        if not success or not check_key(res, 'authDirList'):
-            logger.error(f'获取远程挂载网盘信息失败 - 错误信息={res}')
-            return jsonify({'status': 'fail'})
-
-        for authDir in res['authDirList']:
-            auth_path = authDir['path']
-            if file_path.startswith(auth_path):
-                cloud_type = authDir['cloudStorageType']
-                replace_path = ''
-                if cloud_type == 4:
-                    # 夸克
-                    cloud_username = authDir['username']
-                    replace_path = f'远程挂载-webdav_{cloud_username}_127.0.0.1_dav'
-                elif cloud_type == 1:
-                    # 百度
-                    cloud_comment = authDir['comment']
-                    replace_path = f'远程挂载-百度网盘_{cloud_comment}'
-                pattern = r'/vol02/.*?/'
-                file_path = re.sub(pattern, f'{replace_path}/', file_path)
-                break
-    else:
-        # 移除 '/vol1/1000'
-        pattern = r'/vol\d/\d{4}/'
-        file_path = re.sub(pattern, '', file_path)
-
-    # 将所有 '/' 替换为 '\\'
-    windows_path = file_path.replace('/', '\\')
-    smb_url = f'\\\\{hostname}\\{windows_path}'
-
+    smb_url = convert_file_path(file_path, hostname)
     logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
     time_cmd = '/seek=' + seconds_to_hms(ts)
@@ -271,14 +274,9 @@ def tv():
             if video_stream_guid == video_guid:
                 duration = video['duration']
 
-        # 移除 '/vol1/1000'
-        pattern = r'/vol\d/\d{4}/'
-        path_without_prefix = re.sub(pattern, '', file_path)
-        # 将所有 '/' 替换为 '\\'
-        windows_path = path_without_prefix.replace('/', '\\')
-        smb_url = f'\\\\{hostname}\\{windows_path}'
-
-        logger.info(f'获取到相关文件信息：{file_path}，SMB地址：{smb_url}')
+        old_path = file_path
+        smb_url = convert_file_path(file_path, hostname)
+        logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
         time_cmd = '/seek=' + seconds_to_hms(ts)
         title = '/title=' + title
