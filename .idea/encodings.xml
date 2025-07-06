@@ -2,6 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/ffmpeg.log" charset="GBK" />
-    <file url="file://$PROJECT_DIR$/fnToPotPlayer.log" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/fnToPotPlayer.log" charset="UTF-8" />
   </component>
 </project>

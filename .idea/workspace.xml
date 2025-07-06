@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="tips">
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="no debug">
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chrome-extensions/manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/chrome-extensions/manifest.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/log.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/log.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,6 +64,7 @@
       <option name="PARENT_ENVS" value="true" />
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="fnToPotPlayer-mode" value="dev" />
       </envs>
       <option name="SDK_HOME" value="" />
       <option name="SDK_NAME" value="Python 3.12 (fnToPotPlayer)" />
@@ -189,8 +193,27 @@
       <option name="project" value="LOCAL" />
       <updated>1751614461180</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="no debug">
+      <option name="closed" value="true" />
+      <created>1751654046009</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1751654046009</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
@@ -201,6 +224,7 @@
     <MESSAGE value="update tv" />
     <MESSAGE value="电影增加已观看判断" />
     <MESSAGE value="tips" />
-    <option name="LAST_COMMIT_MESSAGE" value="tips" />
+    <MESSAGE value="no debug" />
+    <option name="LAST_COMMIT_MESSAGE" value="no debug" />
   </component>
 </project>
