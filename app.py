@@ -11,10 +11,10 @@ from utils.fn import fn_api, set_global_info
 from utils.log import logger
 from utils.potplayer import stop_sec_pot
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 * 1024  # 16GB
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+flash_app = Flask(__name__)
+flash_app.config['UPLOAD_FOLDER'] = 'uploads'
+flash_app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024 * 1024  # 16GB
+os.makedirs(flash_app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 pipe_index = 0
 pipe_cache = {}
@@ -95,12 +95,12 @@ def convert_file_path(file_path, hostname):
     return f'\\\\{hostname}\\{windows_path}'
 
 
-@app.route('/')
+@flash_app.route('/')
 def index():
     return render_template('index.html')
 
 
-@app.route('/movie', methods=['POST'])
+@flash_app.route('/movie', methods=['POST'])
 def movie():
     # 获取表单数据
     # 获取 item guid 和 media guid （可选，用于指定特定文件）
@@ -191,7 +191,7 @@ def movie():
     return jsonify({'status': 'ok'})
 
 
-@app.route('/tv', methods=['POST'])
+@flash_app.route('/tv', methods=['POST'])
 def tv():
     # 获取表单数据
     # 获取 season guid 和 media guid （可选，用于指定特定文件）
@@ -326,6 +326,6 @@ def tv():
 if __name__ == '__main__':
     mode = os.environ.get("fnToPotPlayer-mode", "pro")
     if mode == 'dev':
-        app.run(host='0.0.0.0', port=5050, debug=True)
+        flash_app.run(host='0.0.0.0', port=5050, debug=True)
     else:
-        app.run(host='0.0.0.0', port=5050)
+        flash_app.run(host='0.0.0.0', port=5050)

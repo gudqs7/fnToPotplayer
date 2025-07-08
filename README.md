@@ -8,6 +8,8 @@ python app.py
 # 打包
 pip install pyinstaller
 pyinstaller --onefile --icon=icon.png --name=fn2PotPlayer app.py
+# 打包 GUI 
+pyinstaller --windowed --onefile --add-data "icon.png;." --icon=icon.png --name=fn2PotPlayerGUI gui.py
 ```
 
 # 插件效果
