@@ -19,7 +19,6 @@ def resource_path(relative_path):
     return os.path.join(os.path.abspath("."), relative_path)
 
 
-
 class QTextEditLogger(logging.Handler, QObject):
     append_log = pyqtSignal(str)
 
@@ -200,9 +199,9 @@ class FlaskController(QMainWindow):
 
         # 如果设置了开机自启动，自动启动服务器
         if self.auto_start_cb.isChecked():
-            QTimer.singleShot(1000, self.start_server)
+            QTimer.singleShot(1000, lambda: self.start_server(True))
 
-    def start_server(self):
+    def start_server(self, hide_after_start = False):
         if self.server_running:
             return
 
@@ -221,6 +220,9 @@ class FlaskController(QMainWindow):
         self.start_btn.setEnabled(False)
         self.stop_btn.setEnabled(True)
         logger.info("Flask服务器已启动: http://127.0.0.1:5050")
+        if hide_after_start:
+            logger.info("开机自启立刻隐藏窗口")
+            self.hide()
 
     def stop_server(self):
         # 实际上Flask的开发服务器没有官方停止方法
