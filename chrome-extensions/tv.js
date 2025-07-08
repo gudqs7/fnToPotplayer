@@ -7,10 +7,13 @@ function getCookie(name) {
 
 function checkUrl() {
     const url = window.location.href;
-    if (url.indexOf('/v/tv/season/') == -1) {
-        return false;
+    if (url.indexOf('/v/tv/season/') !== -1) {
+        return true;
     }
-    return true;
+    if (url.indexOf('/v/tv/') !== -1) {
+        return true;
+    }
+    return false;
 }
 
 setInterval(()=>{
@@ -41,6 +44,15 @@ function evaluateXPath(xpath, contextNode = document) {
 function fireContentLoadedEvent() {
     //console.log('sorry wq')
     var btn = evaluateXPath('//*[@id="root"]/div/div[3]/div/div/div[2]/div/div[2]/div[1]/div[2]/div[2]/div[1]/div[3]/div[1]/button')[0]
+    if (!btn){
+        // 单季电视剧
+        btn = evaluateXPath('//*[@id="root"]/div/div[3]/div/div/div[2]/div/div[2]/div[1]/div[2]/div[2]/div/div[2]/div[1]/button')[0]
+    }
+    if (!btn){
+        // TV 页
+        btn = evaluateXPath('//*[@id="root"]/div/div[3]/div/div/div[2]/div/div[2]/div[1]/div[2]/div/div[1]/button')[0]
+    }
+
     //console.log('btn wq', btn)
     if (btn) {
         const hasAdd = btn.getAttribute('has-add-potplayer');
@@ -74,6 +86,7 @@ function fireContentLoadedEvent() {
                 method: 'POST',
                 body: formData
             });
+            console.log('res wq ', response)
         })
     }
 }

@@ -208,6 +208,7 @@ def tv():
         logger.error(f'获取season影视信息失败 - season_guid = {season_guid} 错误信息={res}')
         return jsonify({'status': 'fail'})
     item_guid = res['guid']
+    season_guid = res['parent_guid']
 
     # 获取所有集信息，判断当前集索引
     success, res = fn_api(f'/v/api/v1/episode/list/{season_guid}', None)

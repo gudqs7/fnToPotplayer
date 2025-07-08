@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="电视剧支持远程挂载网盘（夸克和百度）">
-      <change afterPath="$PROJECT_DIR$/.github/release_template.md" afterDir="false" />
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="GitHub">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/chrome-extensions/tv.js" beforeDir="false" afterPath="$PROJECT_DIR$/chrome-extensions/tv.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -215,7 +215,31 @@
       <option name="project" value="LOCAL" />
       <updated>1751769705968</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="GitHub">
+      <option name="closed" value="true" />
+      <created>1751770234910</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1751770234910</updated>
+    </task>
+    <task id="LOCAL-00017" summary="GitHub">
+      <option name="closed" value="true" />
+      <created>1751770398706</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1751770398706</updated>
+    </task>
+    <task id="LOCAL-00018" summary="GitHub">
+      <option name="closed" value="true" />
+      <created>1751770469189</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1751770469189</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -241,6 +265,7 @@
     <MESSAGE value="no debug" />
     <MESSAGE value="v1.4 &#10;&#10;支持远程挂载网盘（夸克和百度）" />
     <MESSAGE value="电视剧支持远程挂载网盘（夸克和百度）" />
-    <option name="LAST_COMMIT_MESSAGE" value="电视剧支持远程挂载网盘（夸克和百度）" />
+    <MESSAGE value="GitHub" />
+    <option name="LAST_COMMIT_MESSAGE" value="GitHub" />
   </component>
 </project>
