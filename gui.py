@@ -1,6 +1,15 @@
 import logging
 import sys
 import os
+
+# 获取脚本所在目录
+exe_name = os.path.basename(sys.executable)
+
+if exe_name == 'fn2PotPlayerGUI.exe':
+    # 切换工作目录到脚本所在目录
+    exe_dir = os.path.dirname(sys.executable)
+    os.chdir(exe_dir)
+
 from utils.log import logger, formatter
 import threading
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton,
@@ -171,7 +180,6 @@ class FlaskController(QMainWindow):
             import winreg
             key = winreg.HKEY_CURRENT_USER
             subkey = r"Software\Microsoft\Windows\CurrentVersion\Run"
-
             try:
                 with winreg.OpenKey(key, subkey, 0, winreg.KEY_ALL_ACCESS) as reg_key:
                     if auto_start:
@@ -201,7 +209,7 @@ class FlaskController(QMainWindow):
         if self.auto_start_cb.isChecked():
             QTimer.singleShot(1000, lambda: self.start_server(True))
 
-    def start_server(self, hide_after_start = False):
+    def start_server(self, hide_after_start=False):
         if self.server_running:
             return
 
