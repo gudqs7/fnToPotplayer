@@ -12,11 +12,11 @@ if exe_name == 'fn2PotPlayerGUI.exe':
 
 from utils.log import logger, formatter
 import threading
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton,
-                             QCheckBox, QTextEdit, QLabel, QSystemTrayIcon, QMenu, QDesktopWidget)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QVBoxLayout, QHBoxLayout, QWidget, QPushButton,
+                             QCheckBox, QTextEdit, QLineEdit, QLabel, QSystemTrayIcon, QMenu, QDesktopWidget)
 from PyQt5.QtCore import Qt, QSettings, QTimer
 from PyQt5.QtGui import QIcon
-from app import flash_app
+from app import flash_app, set_pot_path
 
 from PyQt5.QtCore import pyqtSignal, QObject
 
@@ -70,7 +70,7 @@ class FlaskController(QMainWindow):
         # 定时器用于检查服务器状态
         self.status_timer = QTimer()
         self.status_timer.timeout.connect(self.update_server_status)
-        self.status_timer.start(10000)
+        self.status_timer.start(1000)
 
     def init_logging(self):
         # 添加自定义处理器
@@ -115,6 +115,12 @@ class FlaskController(QMainWindow):
         self.minimize_to_tray_cb = QCheckBox("最小化到托盘")
         self.minimize_to_tray_cb.stateChanged.connect(self.toggle_minimize_to_tray)
 
+        pot_path_layout = QHBoxLayout()
+        pot_path_label = QLabel("PotPlayer路径：")
+        self.pot_path_text = QLineEdit("C:\\Program Files\\DAUM\\PotPlayer\\PotPlayerMini64.exe")
+        pot_path_layout.addWidget(pot_path_label)
+        pot_path_layout.addWidget(self.pot_path_text)
+
         self.tip_label = QLabel("若PotPlayer提示错误，打开详细错误信息，找到对应文件路径到文件管理器打开试试！")
         self.tip_label.setStyleSheet("color: red;")
 
@@ -128,6 +134,7 @@ class FlaskController(QMainWindow):
         button_layout.addWidget(self.stop_btn)
         button_layout.addWidget(self.auto_start_cb)
         button_layout.addWidget(self.minimize_to_tray_cb)
+        button_layout.addLayout(pot_path_layout)
         button_layout.addWidget(self.tip_label)
 
         layout.addLayout(button_layout)
@@ -204,6 +211,7 @@ class FlaskController(QMainWindow):
         # 加载设置
         self.auto_start_cb.setChecked(self.settings.value("auto_start", False, type=bool))
         self.minimize_to_tray_cb.setChecked(self.settings.value("minimize_to_tray", False, type=bool))
+        self.pot_path_text.setText(self.settings.value('pot_path', "C:\\Program Files\\DAUM\\PotPlayer\\PotPlayerMini64.exe", type=str))
 
         # 如果设置了开机自启动，自动启动服务器
         if self.auto_start_cb.isChecked():
@@ -212,6 +220,10 @@ class FlaskController(QMainWindow):
     def start_server(self, hide_after_start=False):
         if self.server_running:
             return
+
+        pot_path = self.pot_path_text.text()
+        self.settings.setValue('pot_path', pot_path)
+        set_pot_path(pot_path)
 
         def run_flask():
             mode = os.environ.get("fnToPotPlayer-mode", "pro")

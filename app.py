@@ -23,6 +23,11 @@ pipe_process_cache = {}
 pot_path = "C:\\Program Files\\DAUM\\PotPlayer\\PotPlayerMini64.exe"
 
 
+def set_pot_path(path):
+    global pot_path
+    pot_path = path
+
+
 def activate_window_by_pid(pid, sleep=0):
     if os.name != 'nt':
         time.sleep(1.5)
@@ -284,7 +289,12 @@ def tv():
 
         cmd = [pot_path, smb_url, time_cmd, title, '/config=fntv']
         logger.info(f'执行cmd，参数：{cmd}')
-        player = subprocess.Popen(cmd)
+        try:
+            player = subprocess.Popen(cmd)
+        except Exception as e:
+            logger.error(f'执行CMD报错：{e}')
+            return jsonify({'status': 'fail'})
+
         activate_window_by_pid(player.pid, sleep=1)
         stop_sec = stop_sec_pot(player.pid)
 
