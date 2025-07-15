@@ -299,6 +299,11 @@ def tv():
         stop_sec = stop_sec_pot(player.pid)
         play_per = stop_sec / duration * 100
 
+        # 时间异常
+        if stop_sec == 1397424 or stop_sec > duration + 100:
+            logger.error(f'时间异常 - stop_sec = {stop_sec} duration={duration}')
+            return jsonify({'status': 'fail'})
+
         # 小于15s 或播放进度大于90%，视作下一集
         if (duration - stop_sec) < 15 or play_per > 90:
             current_index = current_index + 1

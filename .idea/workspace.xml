@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="添加 PotPlayer 路径设置">
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="跳过片尾">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
     </list>
@@ -56,7 +56,7 @@
       <recent name="D:\code\fnToPotPlayer\utils" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.gui">
+  <component name="RunManager" selected="Python.app">
     <configuration name="app" type="PythonConfigurationType" factoryName="Python">
       <module name="fnToPotPlayer" />
       <option name="ENV_FILES" value="" />
@@ -301,7 +301,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752073175292</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="跳过片尾">
+      <option name="closed" value="true" />
+      <created>1752584076342</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1752584076342</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -332,6 +340,7 @@
     <MESSAGE value="开机启动自动隐藏" />
     <MESSAGE value="修复开机启动时工作目录为 system32 问题" />
     <MESSAGE value="添加 PotPlayer 路径设置" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加 PotPlayer 路径设置" />
+    <MESSAGE value="跳过片尾" />
+    <option name="LAST_COMMIT_MESSAGE" value="跳过片尾" />
   </component>
 </project>
