@@ -255,7 +255,7 @@ def tv():
         season_number = res['item'].get('season_number') or '1'
         episode_number = res['item'].get('episode_number') or '1'
         title = res['item'].get('title') or ''
-        title = f'{tv_title}-第{season_number}季-第{episode_number}集：{title}'
+        title = f'{tv_title}-第{season_number}季-第{episode_number}集 {title}'
         duration = res['item']['duration']
 
         # 根据 item guid 获取文件流信息，拼接smb文件参数
@@ -297,9 +297,10 @@ def tv():
 
         activate_window_by_pid(player.pid, sleep=1)
         stop_sec = stop_sec_pot(player.pid)
+        play_per = stop_sec / duration * 100
 
-        # 小于15s，视作下一集
-        if (duration - stop_sec) < 15:
+        # 小于15s 或播放进度大于90%，视作下一集
+        if (duration - stop_sec) < 15 or play_per > 90:
             current_index = current_index + 1
             logger.info(f'检测到已看完一集 stop_sec={stop_sec} duration={duration} curr_index={current_index}')
             # 播放下一集，将这集标记已观看

@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="修复开机启动时工作目录为 system32 问题">
+    <list default="true" id="c30cfa32-35fa-470f-8097-afbf26e6d726" name="更改" comment="添加 PotPlayer 路径设置">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -294,7 +293,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752071821045</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="添加 PotPlayer 路径设置">
+      <option name="closed" value="true" />
+      <created>1752073175292</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1752073175292</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -324,6 +331,7 @@
     <MESSAGE value="修复单季的按钮不显示问题&#10;增加 /tv/* 页的按钮" />
     <MESSAGE value="开机启动自动隐藏" />
     <MESSAGE value="修复开机启动时工作目录为 system32 问题" />
-    <option name="LAST_COMMIT_MESSAGE" value="修复开机启动时工作目录为 system32 问题" />
+    <MESSAGE value="添加 PotPlayer 路径设置" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加 PotPlayer 路径设置" />
   </component>
 </project>
