@@ -126,6 +126,8 @@ def movie():
 
     media_guid = res['media_guid'] or ''
     video_guid = res['video_guid'] or ''
+    subtitle_guid = res['subtitle_guid'] or ''
+    audio_guid = res['audio_guid'] or ''
     ts = res['ts']
     title = res['item'].get('title') or ''
     duration = res['item']['duration']
@@ -188,6 +190,7 @@ def movie():
         logger.info(f'修改观看进度：item_guid = {item_guid} stop_sec = {seconds_to_hms(stop_sec)}')
         success, res = fn_api('/v/api/v1/play/record',
                               {'item_guid': item_guid, 'media_guid': media_guid, 'video_guid': video_guid,
+                               'audio_guid': audio_guid, 'subtitle_guid': subtitle_guid,
                                'ts': stop_sec})
         if not success:
             logger.error(f'修改进度失败 - item_guid = {item_guid} stop_sec = {stop_sec} 错误信息={res}')
@@ -234,6 +237,8 @@ def tv():
     last_episode_guid = ''
     last_media_guid = ''
     last_video_guid = ''
+    last_audio_guid = ''
+    last_subtitle_guid = ''
     all_finished = False
     while True:
         if current_index > total_index - 1:
@@ -250,12 +255,14 @@ def tv():
 
         media_guid = res['media_guid'] or ''
         video_guid = res['video_guid'] or ''
+        subtitle_guid = res['subtitle_guid'] or ''
+        audio_guid = res['audio_guid'] or ''
         ts = res['ts']
         tv_title = res['item'].get('tv_title') or '某电视剧'
         season_number = res['item'].get('season_number') or '1'
         episode_number = res['item'].get('episode_number') or '1'
         title = res['item'].get('title') or ''
-        title = f'{tv_title}-第{season_number}季-第{episode_number}集 {title}'
+        title = f'{tv_title}-第{season_number}季-第{episode_number}集　{title}'
         duration = res['item']['duration']
 
         # 根据 item guid 获取文件流信息，拼接smb文件参数
@@ -304,8 +311,8 @@ def tv():
             logger.error(f'时间异常 - stop_sec = {stop_sec} duration={duration}')
             return jsonify({'status': 'fail'})
 
-        # 小于15s 或播放进度大于90%，视作下一集
-        if (duration - stop_sec) < 15 or play_per > 90:
+        # 小于15s 或播放进度大于95%，视作下一集
+        if (duration - stop_sec) < 15 or play_per > 93:
             current_index = current_index + 1
             logger.info(f'检测到已看完一集 stop_sec={stop_sec} duration={duration} curr_index={current_index}')
             # 播放下一集，将这集标记已观看
@@ -318,6 +325,8 @@ def tv():
             last_episode_guid = episode_guid
             last_media_guid = media_guid
             last_video_guid = video_guid
+            last_audio_guid = audio_guid
+            last_subtitle_guid = subtitle_guid
             break
 
     if all_finished:
@@ -331,6 +340,7 @@ def tv():
     # 修改时间
     success, res = fn_api('/v/api/v1/play/record',
                           {'item_guid': last_episode_guid, 'media_guid': last_media_guid, 'video_guid': last_video_guid,
+                           'subtitle_guid': last_subtitle_guid, 'audio_guid': last_audio_guid,
                            'ts': last_stop_sec})
     if not success:
         logger.error(f'修改进度失败 - item_guid = {item_guid} stop_sec = {last_stop_sec} 错误信息={res}')
