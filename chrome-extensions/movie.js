@@ -13,6 +13,9 @@ function checkMovieUrl() {
     if (url.indexOf('/v/tv/episode/') !== -1) {
         return true;
     }
+    if (url.indexOf('/v/other/') !== -1) {
+        return true;
+    }
     return false;
 }
 
