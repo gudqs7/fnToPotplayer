@@ -1,3 +1,4 @@
+import ctypes
 import json
 import os
 import re
@@ -67,6 +68,9 @@ def check_key(res, key):
 
 def convert_file_path(file_path, hostname):
     # 处理 /vol02 远程挂载
+    vol_number = 0
+    first_dir = ''
+    other_path = ''
     if file_path.startswith('/vol02/'):
         # 获取远程网盘的路径
         success, res = fn_api('/v/api/v1/server/getAppAuthorizedDir', None)
@@ -92,12 +96,54 @@ def convert_file_path(file_path, hostname):
                 break
     else:
         # 移除 '/vol1/1000'
-        pattern = r'/vol\d/\d{4}/'
-        file_path = re.sub(pattern, '', file_path)
+        pattern = r'/vol(\d)/\d{4}/(.*?)/(.*)'
+        match = re.search(pattern, file_path)
+        if match:
+            vol_number = match.group(1)
+            first_dir = match.group(2)
+            other_path = match.group(3)
+            file_path = f'{first_dir}/{other_path}'
 
     # 将所有 '/' 替换为 '\\'
     windows_path = file_path.replace('/', '\\')
-    return f'\\\\{hostname}\\{windows_path}'
+    smb_path = f'\\\\{hostname}\\{windows_path}'
+
+    smb_exists = check_smb_file(smb_path)
+    if smb_exists:
+        return smb_path
+    else:
+        file_path = f'{first_dir} (存储空间{vol_number})/{other_path}'
+        windows_path = file_path.replace('/', '\\')
+        smb_path = f'\\\\{hostname}\\{windows_path}'
+        return smb_path
+
+
+def check_smb_file(smb_url):
+    """
+    使用Windows API检查SMB文件是否存在
+    """
+
+    # 转换为宽字符字符串
+    unc_path_wide = smb_url.encode('utf-16le') + b'\x00\x00'
+
+    # 调用Windows API
+    try:
+        # 尝试获取文件属性
+        attr = ctypes.windll.kernel32.GetFileAttributesW(unc_path_wide)
+        if attr == -1 or attr == 0xFFFFFFFF:  # INVALID_FILE_ATTRIBUTES
+            error = ctypes.windll.kernel32.GetLastError()
+            # 文件不存在错误代码
+            if error == 2:  # ERROR_FILE_NOT_FOUND
+                return False
+            elif error == 3:  # ERROR_PATH_NOT_FOUND
+                return False
+            else:
+                return False
+        else:
+            return True
+
+    except Exception as e:
+        return False
 
 
 @flash_app.route('/')
