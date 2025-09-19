@@ -38,9 +38,9 @@ function evaluateXPath(xpath, contextNode = document) {
 }
 
 function fireContentLoadedEventMovie() {
-//    console.log('sorry wq');
+    console.log('fireContentLoadedEventMovie');
     var btn = evaluateXPath('//*[@id="root"]/div/div[3]/div/div/div[2]/div/div[2]/div[1]/div[2]/div/div[1]/button')[0]
-//    console.log('btn wq', btn)
+//    console.log('fireContentLoadedEventMovie; btn', btn)
     if (btn) {
         const hasAdd = btn.getAttribute('has-add-potplayer');
         if (hasAdd=='1') {
@@ -77,7 +77,25 @@ function fireContentLoadedEventMovie() {
     }
 }
 
+function fireContentLoadedEventLogo() {
+    var logo = evaluateXPath('//*[@id="root"]/div/div[1]/div/div[1]')[0]
+//    console.log('fireContentLoadedEventMovie; logo', logo)
+    if (logo) {
+        const hasAdd = logo.getAttribute('has-add-wq-link');
+        if (hasAdd=='1') {
+            return
+        }
+        logo.setAttribute('has-add-wq-link', '1');
+
+        logo.addEventListener('click', function(){
+            const origin = window.location.origin;
+            window.location.href = origin + '/v'
+        })
+    }
+}
+
 setInterval(()=>{
+    fireContentLoadedEventLogo()
     if (!checkMovieUrl()) {
         return;
     }
