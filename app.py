@@ -198,6 +198,7 @@ def movie():
             file_path = file['path']
             break
 
+    choose_str = ''
     if file_choose:
         file_choose = int(file_choose)
         if file_choose < len(res['files']):
@@ -211,6 +212,7 @@ def movie():
         if media_guid == video_media_guid:
             duration = video['duration']
             video_guid = video_stream_guid
+            choose_str = str.upper(video['resolution_type'] or '') + '-' + (video['color_range_type'] or '')
             break
 
     if ts > duration:
@@ -221,7 +223,7 @@ def movie():
     logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
     time_cmd = '/seek=' + seconds_to_hms(ts)
-    title = '/title=' + title
+    title = '/title=' + title + '　' + str(choose_str) + '　' + str(file_choose)
 
     cmd = [pot_path, smb_url, time_cmd, title, '/config=fntv']
 
