@@ -80,7 +80,6 @@ function fireContentLoadedEvent() {
             formData.append('base_url', origin);
             formData.append('token', token);
             formData.append('hostname', hostname);
-            formData.append('file_choose', window.wq_temp_file_choose);
 
             const response = await fetch('http://127.0.0.1:5050/tv', {
                 method: 'POST',

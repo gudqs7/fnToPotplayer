@@ -1,3 +1,5 @@
+wq_temp_file_choose = ''
+
 function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
@@ -54,9 +56,9 @@ function fireContentLoadedEventMovie() {
                         continue
                     }
                     fileBtn.setAttribute('has-add-potplayer', '1')
-                    fileBtn.addEventListener('click', function () {
-                        window.wq_temp_file_choose = i
-                        console.log('window.wq_temp_file_choose=', window.wq_temp_file_choose)
+                    fileBtn.addEventListener('click', async function () {
+                        wq_temp_file_choose = i
+                        // console.log('choose = ', wq_temp_file_choose)
                     })
                 }
             }
@@ -70,6 +72,7 @@ function fireContentLoadedEventMovie() {
         if (hasAdd === '1') {
             return
         }
+        wq_temp_file_choose = ''
 
         btn.setAttribute('has-add-potplayer', '1');
 
@@ -86,8 +89,9 @@ function fireContentLoadedEventMovie() {
             const origin = window.location.origin;
             const hostname = window.location.hostname;
             const token = getCookie('Trim-MC-token')
-            if (!window.wq_temp_file_choose) {
-                window.wq_temp_file_choose = ''
+            // console.log('play file_choose = ', wq_temp_file_choose)
+            if (wq_temp_file_choose === null) {
+                wq_temp_file_choose = ''
             }
 
             const formData = new FormData();
@@ -95,7 +99,7 @@ function fireContentLoadedEventMovie() {
             formData.append('base_url', origin);
             formData.append('token', token);
             formData.append('hostname', hostname);
-            formData.append('file_choose', window.wq_temp_file_choose);
+            formData.append('file_choose', wq_temp_file_choose);
 
             const response = await fetch('http://127.0.0.1:5050/movie', {
                 method: 'POST',
