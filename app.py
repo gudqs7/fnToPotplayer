@@ -159,6 +159,7 @@ def movie():
     base_url = request.form.get('base_url')
     hostname = request.form.get('hostname')
     token = request.form.get('token')
+    file_choose = request.form.get('file_choose')
 
     set_global_info(base_url, token)
 
@@ -196,13 +197,24 @@ def movie():
         if file_guid == media_guid:
             file_path = file['path']
             break
+
+    if file_choose:
+        file_choose = int(file_choose)
+        if file_choose < len(res['files']):
+            choose_file = res['files'][file_choose]
+            file_path = choose_file['path']
+            media_guid = choose_file['guid']
     # 从 video_streams 获取准确的 duration
     for video in res['video_streams']:
         video_stream_guid = video['guid']
         video_media_guid = video['media_guid']
-        if video_stream_guid == video_guid or media_guid == video_media_guid:
+        if media_guid == video_media_guid:
             duration = video['duration']
+            video_guid = video_stream_guid
             break
+
+    if ts > duration:
+        ts = 0
 
     old_path = file_path
     smb_url = convert_file_path(file_path, hostname)
