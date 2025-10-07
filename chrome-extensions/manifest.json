@@ -1,6 +1,6 @@
 {
     "name": "飞牛跳转PotPlayer",
-    "version": "1.5",
+    "version": "1.7",
     "manifest_version": 3,
     "description": "给飞牛影视网页端增加去PotPlayer播放的按钮",
     "icons": {
