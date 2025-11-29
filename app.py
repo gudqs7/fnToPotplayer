@@ -223,7 +223,7 @@ def movie():
     logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
     time_cmd = '/seek=' + seconds_to_hms(ts)
-    title = '/title=' + title + '　' + str(choose_str) + '　' + str(file_choose)
+    title = '/title=' + title.replace(' ', '　') + '　' + str(choose_str) + '　' + str(file_choose)
 
     cmd = [pot_path, smb_url, time_cmd, title, '/config=fntv']
 
@@ -352,7 +352,7 @@ def tv():
         logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
         time_cmd = '/seek=' + seconds_to_hms(ts)
-        title = '/title=' + title
+        title = '/title=' + title.replace(' ', '　')
 
         cmd = [pot_path, smb_url, time_cmd, title, '/config=fntv']
         logger.info(f'执行cmd，参数：{cmd}')
