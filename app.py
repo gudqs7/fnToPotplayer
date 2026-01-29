@@ -82,15 +82,21 @@ def convert_file_path(file_path, hostname):
             auth_path = authDir['path']
             if file_path.startswith(auth_path):
                 cloud_type = authDir['cloudStorageType']
+                cloud_comment = authDir['comment']
+                cloud_username = authDir['username']
                 replace_path = ''
                 if cloud_type == 4:
                     # 夸克
-                    cloud_username = authDir['username']
-                    replace_path = f'远程挂载-webdav_{cloud_username}_127.0.0.1_dav'
+                    replace_path = f'远程挂载-夸克网盘_{cloud_comment}'
                 elif cloud_type == 1:
                     # 百度
-                    cloud_comment = authDir['comment']
                     replace_path = f'远程挂载-百度网盘_{cloud_comment}'
+                elif cloud_type == 2:
+                    # 阿里
+                    replace_path = f'远程挂载-阿里云盘_{cloud_comment}'
+                elif cloud_type == 3:
+                    # 115
+                    replace_path = f'远程挂载-115生活_{cloud_comment}'
                 pattern = r'/vol02/.*?/'
                 file_path = re.sub(pattern, f'{replace_path}/', file_path)
                 break
