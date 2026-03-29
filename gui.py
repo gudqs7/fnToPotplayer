@@ -115,6 +115,14 @@ class FlaskController(QMainWindow):
         self.minimize_to_tray_cb = QCheckBox("最小化到托盘")
         self.minimize_to_tray_cb.stateChanged.connect(self.toggle_minimize_to_tray)
 
+        self.use_webdav = QCheckBox("使用webdav")
+        self.use_webdav.stateChanged.connect(self.toggle_minimize_to_tray)
+
+        choose_layout = QHBoxLayout()
+        choose_layout.addWidget(self.auto_start_cb)
+        choose_layout.addWidget(self.minimize_to_tray_cb)
+        # choose_layout.addWidget(self.use_webdav)
+
         pot_path_layout = QHBoxLayout()
         pot_path_label = QLabel("PotPlayer路径：")
         self.pot_path_text = QLineEdit("C:\\Program Files\\DAUM\\PotPlayer\\PotPlayerMini64.exe")
@@ -132,8 +140,7 @@ class FlaskController(QMainWindow):
         button_layout = QVBoxLayout()
         button_layout.addWidget(self.start_btn)
         button_layout.addWidget(self.stop_btn)
-        button_layout.addWidget(self.auto_start_cb)
-        button_layout.addWidget(self.minimize_to_tray_cb)
+        button_layout.addLayout(choose_layout)
         button_layout.addLayout(pot_path_layout)
         button_layout.addWidget(self.tip_label)
 
