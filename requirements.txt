@@ -1,3 +1,5 @@
 requests
 Flask
 PyQt5
+Pillow
+pyinstaller
