@@ -1,2 +1,3 @@
 requests
 Flask
+PyQt5

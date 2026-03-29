@@ -43,7 +43,7 @@ def activate_window_by_pid(pid, sleep=0):
                 return
 
     threading.Thread(target=activate_loop).start()
-    time.sleep(sleep)
+    time.sleep(2)
 
 
 def seconds_to_hms(seconds):

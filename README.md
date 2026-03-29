@@ -2,7 +2,9 @@
 
 ```shell
 # 运行
-pip install requests Flask 或者 pip intall -r  requirements.txt
+pip install requests Flask
+# 或者
+pip install -r  requirements.txt
 python app.py
 
 # 打包
