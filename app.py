@@ -228,10 +228,14 @@ def movie():
     smb_url = convert_file_path(file_path, hostname)
     logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
-    time_cmd = '/seek=' + seconds_to_hms(ts)
+    time_hms = seconds_to_hms(ts)
     title = '/title=' + title.replace(' ', '　') + '　' + str(choose_str) + '　' + str(file_choose)
 
-    cmd = [pot_path, smb_url, time_cmd, title, '/config=fntv']
+    if "mpc-be".lower() in pot_path.lower():
+        # mpc-be 播放器不支持后面命令
+        cmd = [pot_path, f'"{smb_url}"', '/startpos', time_hms]
+    else:
+        cmd = [pot_path, smb_url, '/seek=' + time_hms, title, '/config=fntv']
 
     logger.info(f'执行cmd，参数：{cmd}')
     player = subprocess.Popen(cmd)
@@ -242,6 +246,11 @@ def movie():
         return jsonify({'status': 'fail'})
 
     logger.info(f'检测到PotPlayer已关闭，关闭时进度为：{seconds_to_hms(stop_sec)} / {seconds_to_hms(duration)}')
+
+    # 时间异常
+    if stop_sec == 1397424 or stop_sec > duration + 100:
+        logger.error(f'时间异常 - stop_sec = {stop_sec} duration={duration}')
+        return jsonify({'status': 'fail'})
 
     # 小于15s，视作已观看
     if (duration - stop_sec) < 15:
@@ -357,10 +366,15 @@ def tv():
         smb_url = convert_file_path(file_path, hostname)
         logger.info(f'获取到相关文件信息：{old_path}，SMB地址：{smb_url}')
 
-        time_cmd = '/seek=' + seconds_to_hms(ts)
+        time_hms = seconds_to_hms(ts)
         title = '/title=' + title.replace(' ', '　')
 
-        cmd = [pot_path, smb_url, time_cmd, title, '/config=fntv']
+        if "mpc-be".lower() in pot_path.lower():
+            # mpc-be 播放器不支持后面命令
+            cmd = [pot_path, f'"{smb_url}"', '/startpos', time_hms]
+        else:
+            cmd = [pot_path, smb_url, '/seek=' + time_hms, title, '/config=fntv']
+
         logger.info(f'执行cmd，参数：{cmd}')
         try:
             player = subprocess.Popen(cmd)
