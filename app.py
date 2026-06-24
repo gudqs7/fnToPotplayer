@@ -100,6 +100,15 @@ def convert_file_path(file_path, hostname):
                 pattern = r'/vol02/.*?/'
                 file_path = re.sub(pattern, f'{replace_path}/', file_path)
                 break
+    elif file_path.startswith('/vol00/'):
+        # /vol00/{外接硬盘名称} 为外置硬盘
+        pattern = r'/vol(\d)/(.*?)/(.*)'
+        match = re.search(pattern, file_path)
+        if match:
+            vol_number = match.group(1)
+            first_dir = match.group(2)
+            other_path = match.group(3)
+            file_path = f'{first_dir}/{other_path}'
     else:
         # 移除 '/vol1/1000'
         pattern = r'/vol(\d)/\d{4}/(.*?)/(.*)'
