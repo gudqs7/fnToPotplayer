@@ -3,6 +3,7 @@ import json
 import random
 import time
 from time import sleep
+from urllib.parse import parse_qsl, unquote, urlencode, urlsplit
 
 import requests
 
@@ -38,22 +39,45 @@ def get_md5(text: str) -> str:
 
 
 def generate_random_digits(length=6):
-    """生成指定位数的随机数字字符串（0-9）"""
-    return ''.join(str(random.randint(0, 9)) for _ in range(length))
+    """生成指定位数的随机数字字符串，首位不为 0。"""
+    if length <= 0:
+        return ''
+    lower = 0 if length == 1 else 10 ** (length - 1)
+    upper = 10 ** length - 1
+    return str(random.randint(lower, upper))
+
+
+def _json_dumps_compact(data):
+    """与前端 JSON.stringify 保持一致，不能使用 Python 默认的空格分隔。"""
+    return json.dumps(data, ensure_ascii=False, separators=(',', ':'))
+
+
+def _get_sign_query(url):
+    """
+    按飞牛影视前端的 URLSearchParams 逻辑处理 GET 参数：
+    同名参数取最后一个值，按参数名排序，URL 编解码后再参与签名。
+    """
+    params = {}
+    for key, value in parse_qsl(urlsplit(url).query, keep_blank_values=True):
+        if value not in ('undefined', 'null'):
+            params[key] = value
+    query = urlencode(sorted(params.items())).replace('+', '%20')
+    return unquote(query)
+
+
+def _get_sign_body(url, data):
+    if data is None:
+        return _get_sign_query(url)
+    return _json_dumps_compact(data)
 
 
 def gen_fn_authx(url, data):
     # nonce=102364&timestamp=1751540090490&sign=ae2381cf8eb78bf1d585c622e8906767
     nonce = generate_random_digits()
     timestamp = int(time.time() * 1000)
-
-    if data is None:
-        data_json = ''
-    else:
-        data_json = json.dumps(data)
-
-    data_json_md5 = get_md5(data_json)
-    sign_array = [api_key, url, nonce, str(timestamp), data_json_md5, api_secret]
+    path = urlsplit(url).path
+    data_json_md5 = get_md5(_get_sign_body(url, data))
+    sign_array = [api_key, path, nonce, str(timestamp), data_json_md5, api_secret]
 
     sign_str = '_'.join(sign_array)
 
@@ -62,17 +86,24 @@ def gen_fn_authx(url, data):
 
 
 def fn_api(url, data, try_times=0):
-    full_url = baseUrl + url
+    full_url = baseUrl.rstrip('/') + url
     authx = gen_fn_authx(url, data)
-    headers = {"Content-Type": "application/json", "Authorization": fn_token, "authx": authx}
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": fn_token,
+        "authx": authx,
+        "X-Trim-Client": "web",
+        "X-Trim-Client-Version": "629",
+    }
 
     if data is None:
         response = requests.get(full_url, headers=headers)
     else:
-        response = requests.post(full_url, headers=headers, json=data)
+        body = _json_dumps_compact(data).encode('utf-8')
+        response = requests.post(full_url, headers=headers, data=body)
     res = response.json()
     if 'code' in res:
-        if res['code'] == 5000 and res['msg'] == 'invalid sign':
+        if res['code'] == 5000:
             if try_times > 2:
                 return False, f'尝试次数过多 try_times = {try_times}'
             sleep(0.3)
