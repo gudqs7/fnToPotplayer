@@ -186,6 +186,7 @@ def movie():
 
     # print('play info ', json.dumps(res))
 
+    item_guid = res['guid']
     media_guid = res['media_guid'] or ''
     video_guid = res['video_guid'] or ''
     subtitle_guid = res['subtitle_guid'] or ''
