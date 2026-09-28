@@ -108,7 +108,7 @@ def convert_file_path(file_path, hostname):
             vol_number = match.group(1)
             first_dir = match.group(2)
             other_path = match.group(3)
-            file_path = f'{first_dir}/{other_path}'
+            file_path = f'外接存储-{first_dir}/{other_path}'
     else:
         # 移除 '/vol1/1000'
         pattern = r'/vol(\d)/\d{4}/(.*?)/(.*)'
